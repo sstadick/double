@@ -5,7 +5,6 @@
 #include <string.h>
 #include <unistd.h>
 #define PROGNAME "double"
-#define MAXLINE 100
 #define ARRAYSTART 2000
 
 void mem_failure(void) {
@@ -40,6 +39,7 @@ int main(int argc, char *argv[]) {
   }
 
   // advice posix on access patterns
+#if defined(__linux__)
   int err;
   if ((err = posix_fadvise(fileno(f), 0, 0, POSIX_FADV_SEQUENTIAL)) < 0) {
     fprintf(stderr, "fadvise: %d\n", err);
@@ -49,6 +49,7 @@ int main(int argc, char *argv[]) {
     fprintf(stderr, "fadvise: %d\n", err);
     exit(1);
   }
+#endif
   // allocate array
   lines = malloc(ARRAYSTART * sizeof(uintptr_t));
   if (lines == NULL) {
@@ -75,6 +76,7 @@ int main(int argc, char *argv[]) {
 
   for (int i = 0; i < used; i++) {
     for (int j = 0; j < used; j++) {
+#if defined(__linux__)
       fputs_unlocked(lines[i], stdout);
       fputs_unlocked(lines[j], stdout);
       fputc_unlocked('\n', stdout);
@@ -82,6 +84,15 @@ int main(int argc, char *argv[]) {
       fputc_unlocked(' ', stdout);
       fputs_unlocked(lines[j], stdout);
       fputc_unlocked('\n', stdout);
+#else
+      fputs(lines[i], stdout);
+      fputs(lines[j], stdout);
+      fputc('\n', stdout);
+      fputs(lines[i], stdout);
+      fputc(' ', stdout);
+      fputs(lines[j], stdout);
+      fputc('\n', stdout);
+#endif
     }
   }
 }
