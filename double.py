@@ -2,7 +2,7 @@ import fileinput
 from itertools import combinations
 
 def main():
-    [print(f"{a}{b} {a} {b}")for a, b in combinations((line.rstrip() for line in fileinput.input()), 2)]
+    [print(f"{a}{b}\n{a} {b}")for a, b in combinations((line.rstrip() for line in fileinput.input()), 2)]
 
 
 
