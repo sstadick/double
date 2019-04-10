@@ -93,13 +93,13 @@ int main(int argc, char *argv[]) {
   // Read inputs into array
   while (getline(&line, &line_size, f) != -1) {
     line[strcspn(line, "\n")] = 0;
-    line_ptr = malloc(line_size * sizeof(char) + 1);
+    line_ptr = malloc(line_size * sizeof(char*) + 1);
     if (line_ptr == NULL) {
       mem_failure();
     }
     strcpy(line_ptr, line);
     if (used == size) {
-      lines = (char **)realloc(lines, ((size *= 2) * (sizeof(char))));
+      lines = (char **)realloc(lines, ((size *= 2) * (sizeof(char*))));
       if (lines == NULL) {
         mem_failure();
       }
