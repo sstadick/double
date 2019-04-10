@@ -12,6 +12,40 @@ void mem_failure(void) {
   exit(1);
 }
 
+ inline static void c_write_line(char *a, char *b) {
+    char c;
+    for (int i = 0;;i++) {
+        c = a[i];
+        if (c == '\0')
+            break;
+        putchar_unlocked(c);
+    }
+
+    for (int i = 0;;i++) {
+        c = b[i];
+        if (c == '\0')
+            break;
+        putchar_unlocked(c);
+    }
+    putchar_unlocked('\n');
+
+    for (int i = 0;;i++) {
+        c = a[i];
+        if (c == '\0')
+            break;
+        putchar_unlocked(c);
+    }
+
+    putchar_unlocked(' ');
+    for (int i = 0;;i++) {
+        c = b[i];
+        if (c == '\0')
+            break;
+        putchar_unlocked(c);
+    }
+    putchar_unlocked('\n');
+}
+
 int main(int argc, char *argv[]) {
 
   static char buf[BUFSIZ];
@@ -38,7 +72,7 @@ int main(int argc, char *argv[]) {
     f = stdin;
   }
 
-  // advice posix on access patterns
+  // advise posix on access patterns
 #if defined(__linux__)
   int err;
   if ((err = posix_fadvise(fileno(f), 0, 0, POSIX_FADV_SEQUENTIAL)) < 0) {
@@ -73,9 +107,9 @@ int main(int argc, char *argv[]) {
     lines[used++] = line_ptr;
   }
   fclose(f);
-
-  for (int i = 0; i < used; i++) {
-    for (int j = 0; j < used; j++) {
+  int i, j;
+  for (i = 0; i < used; i++) {
+    for (j = 0; j < used; j++) {
 #if defined(__linux__)
       fputs_unlocked(lines[i], stdout);
       fputs_unlocked(lines[j], stdout);
@@ -85,13 +119,7 @@ int main(int argc, char *argv[]) {
       fputs_unlocked(lines[j], stdout);
       fputc_unlocked('\n', stdout);
 #else
-      fputs(lines[i], stdout);
-      fputs(lines[j], stdout);
-      fputc('\n', stdout);
-      fputs(lines[i], stdout);
-      fputc(' ', stdout);
-      fputs(lines[j], stdout);
-      fputc('\n', stdout);
+    c_write_line(lines[i], lines[j]);
 #endif
     }
   }
