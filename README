@@ -1,0 +1,26 @@
+#double
+
+Take a list of words, and create all combinations of them concatinated, and joined by one space.
+
+EX:
+```
+#list
+hello
+world
+
+helloworld
+helo world
+worldhello
+world hello
+```
+
+Inspired by a random [post](https://www.reddit.com/r/golang/comments/bb4sgb/go_vs_perl_simple_task_speed_comparison/) on reddit. I really wanted to make a C version faster than go.
+
+Current flags for compiling it fast:
+
+```
+clang -O2 -pipe -march=native -mtune=native -o double double.c
+```
+
+Pipe in or pass as argument. The current version is around .01 secons faster than the Go version. The secrets were fputs_unlocked to avoid locking and to not format the output string, and to use posix_fadvise, especially on the output stream.
+
