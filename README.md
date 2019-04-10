@@ -39,11 +39,11 @@ ducktape@marvin:~/Code/tmp/double$ time ./godouble /tmp/list > /tmp/doubled.txt
 real	0m0.105s
 user	0m0.069s
 sys	0m0.036s
-ducktape@marvin:~/Code/tmp/double$ time python3 double.py /tmp/list > /tmp/doubled.txt
+ducktape@marvin:~/Code/double$ time python3 double.py /tmp/list > /tmp/doubled.txt
 
-real	0m0.383s
-user	0m0.343s
-sys	0m0.040s
+real	0m0.361s
+user	0m0.337s
+sys	0m0.024s
 ducktape@marvin:~/Code/tmp/double$ time perl double.pl /tmp/list > /tmp/doubled.txt
 
 real	0m0.361s
